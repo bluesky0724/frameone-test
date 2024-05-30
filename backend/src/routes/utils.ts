@@ -1,7 +1,6 @@
 import express from "express";
-import { UserModel } from '../models/User';
-import { CommunityModel } from '../models/Community';
-import crypto from 'crypto';
+import { UserModel, CommunityModel } from "../models/index";
+import crypto from "crypto";
 
 const utilsRouter = express.Router();
 
@@ -11,7 +10,7 @@ const utilsRouter = express.Router();
  */
 utilsRouter.get("/health", (_, res) => {
     res.sendStatus(200);
-})
+});
 
 /**
  * @route GET /utils/inflate-db
@@ -29,7 +28,9 @@ utilsRouter.get("/inflate-db", async (_, res) => {
         const communityCount = await CommunityModel.countDocuments({});
 
         if (userCount >= USERS_COUNT && communityCount >= COMMUNITIES_COUNT) {
-            res.status(400).send('Database is already inflated. Please drop the database if you want to regenerate.');
+            res.status(400).send(
+                "Database is already inflated. Please drop the database if you want to regenerate."
+            );
             return;
         }
 
@@ -42,16 +43,25 @@ utilsRouter.get("/inflate-db", async (_, res) => {
             const numberOfEntries = Math.floor(Math.random() * 101);
 
             for (let j = 0; j < numberOfEntries; j++) {
-                const randomDate = new Date(oneYearAgo.getTime() + Math.random() * (now.getTime() - oneYearAgo.getTime()));
+                const randomDate = new Date(
+                    oneYearAgo.getTime() +
+                        Math.random() * (now.getTime() - oneYearAgo.getTime())
+                );
                 const randomPoints = Math.floor(Math.random() * 101);
-                experiencePoints.push({points: randomPoints, timestamp: randomDate});
+                experiencePoints.push({
+                    points: randomPoints,
+                    timestamp: randomDate,
+                });
             }
 
             const user = new UserModel({
                 email: `user${i}@example.com`,
-                passwordHash: crypto.createHash('sha256').update(`qwerty${i}`).digest('hex'),
+                passwordHash: crypto
+                    .createHash("sha256")
+                    .update(`qwerty${i}`)
+                    .digest("hex"),
                 profilePicture: `https://picsum.photos/200?random=${i}`,
-                experiencePoints: experiencePoints
+                experiencePoints: experiencePoints,
             });
             await user.save();
         }
@@ -59,7 +69,7 @@ utilsRouter.get("/inflate-db", async (_, res) => {
         for (let i = 0; i < COMMUNITIES_COUNT; i++) {
             const community = new CommunityModel({
                 name: `Community ${i}`,
-                logo: `https://picsum.photos/200?random=${i+USERS_COUNT}`,
+                logo: `https://picsum.photos/200?random=${i + USERS_COUNT}`,
             });
             await community.save();
         }
@@ -86,7 +96,4 @@ utilsRouter.get("/drop-db", async (_, res) => {
     }
 });
 
-
-export {
-    utilsRouter
-};
+export { utilsRouter };
