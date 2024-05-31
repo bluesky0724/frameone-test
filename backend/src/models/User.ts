@@ -11,7 +11,7 @@ export class User {
     @prop()
     public profilePicture?: string;
 
-    @prop({ required: true, select: false, default: [] })
+    @prop({ required: true, default: [] })
     public experiencePoints?: { points: number; timestamp: Date }[];
 
     @prop({ ref: () => Community, default: undefined })

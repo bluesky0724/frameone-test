@@ -35,6 +35,7 @@ userRouter.get("/", async (_, res) => {
                 email: { $first: "$email" },
                 profilePicture: { $first: "$profilePicture" },
                 totalExperience: { $sum: "$experiencePoints.points" },
+                community: { $first: "$community" },
             },
         },
     ]);

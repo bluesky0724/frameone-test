@@ -3,9 +3,10 @@ export interface User {
     email: string;
     profilePicture?: string;
     totalExperience?: number;
-    experiencePoints?: {points: number, timestamp: string}[];
+    experiencePoints?: { points: number; timestamp: string }[];
+    community?: string;
 }
-  
+
 export interface Community {
     _id: string;
     name: string;
